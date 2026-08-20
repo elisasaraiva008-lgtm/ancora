@@ -1,0 +1,732 @@
+/* ============================================================
+   ÂNCORA — estilo.css
+   CSS compartilhado entre TODAS as páginas do projeto.
+
+   ORGANIZAÇÃO (em ordem):
+   1.  Reset e variáveis CSS
+   2.  Body e base
+   3.  Navegação fixa
+   4.  Títulos de seção
+   5.  Botões
+   6.  Formulários (inputs, selects, labels)
+   7.  Alertas
+   8.  Links auxiliares
+   9.  Cadastro salvo (view de resumo)
+   10. Confirmação / caixa de sucesso
+   11. Agendar: modalidade e campos condicionais
+   12. Profissionais: filtros e cards
+   13. Home: hero, problema, serviços
+   14. Modal personalizado
+   15. Footer
+   16. Animações
+   17. Responsivo (media queries)
+   ============================================================ */
+
+
+/* ============================================================
+   1. RESET E VARIÁVEIS CSS
+   ============================================================ */
+
+/* Reset universal: remove margem e padding padrão do browser.
+   box-sizing:border-box: padding e border são incluídos na
+   largura total do elemento (comportamento mais previsível). */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Paleta de cores do projeto — todas as referências de cor
+     usam estas variáveis para facilitar manutenção.
+     Mudar uma variável aqui reflete em toda a interface. */
+  --navy:   #0d1b2a; /* azul escuro — fundo principal */
+  --deep:   #162032; /* azul mais escuro — fundo de cards e seções alternadas */
+  --teal:   #1a8a7b; /* verde-azul — cor primária de ação */
+  --teal-l: #22b5a2; /* verde-azul claro — hover e destaques */
+  --sand:   #f4ede0; /* areia — texto de alto contraste em fundos escuros */
+  --white:  #faf8f5; /* branco levemente quente — texto principal */
+  --muted:  #8a9aaa; /* cinza-azulado — texto secundário e labels */
+  --accent: #c9973a; /* dourado — cor de destaque da marca (o "R" do logo) */
+  --green:  #3fb98a; /* verde — feedback de sucesso */
+  --red:    #e05a5a; /* vermelho — feedback de erro */
+}
+
+html { scroll-behavior: smooth; }
+/* scroll-behavior:smooth: links âncora (#problema, #servicos)
+   rolam suavemente em vez de pular */
+
+
+/* ============================================================
+   2. BODY E BASE
+   ============================================================ */
+body {
+  font-family: 'DM Sans', sans-serif; /* fonte principal para corpo de texto */
+  background: var(--navy);
+  color: var(--white);
+  min-height: 100vh; /* garante que o footer não flutue em páginas curtas */
+  overflow-x: hidden; /* evita scroll horizontal por elementos que "vazam" */
+}
+
+
+/* ============================================================
+   3. NAVEGAÇÃO FIXA
+   ============================================================ */
+nav {
+  position: fixed; /* permanece visível ao rolar */
+  top: 0; left: 0; right: 0;
+  z-index: 100; /* acima de todo o conteúdo da página */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 3rem;
+  background: rgba(13, 27, 42, .92); /* --navy com 92% de opacidade */
+  backdrop-filter: blur(12px); /* efeito de vidro fosco no conteúdo por trás */
+  border-bottom: 1px solid rgba(255, 255, 255, .06); /* linha sutil de separação */
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--teal-l);
+  text-decoration: none;
+}
+.logo span { color: var(--accent); }
+/* O <span> dentro do logo isola o "R" para receber cor dourada */
+
+nav ul { list-style: none; display: flex; gap: 2rem; }
+nav a { color: var(--muted); text-decoration: none; font-size: .85rem; transition: color .2s; }
+nav a:hover { color: var(--white); }
+
+/* Botão de destaque na nav ("Agendar") */
+.nav-cta {
+  background: var(--teal);
+  color: var(--white) !important; /* !important sobrescreve o nav a { color } acima */
+  padding: .4rem 1.1rem;
+  border-radius: 4px;
+}
+.nav-cta:hover { background: var(--teal-l); }
+
+/* Links protegidos bloqueados para visitantes.
+   nav.js adiciona/remove esta classe conforme o estado de login. */
+.nav-prot.bloqueado {
+  opacity: .4;
+  pointer-events: none; /* desabilita cliques sem remover o elemento */
+  cursor: not-allowed;
+}
+
+
+/* ============================================================
+   4. TÍTULOS DE SEÇÃO
+   ============================================================ */
+.slbl {
+  /* Eyebrow label: texto pequeno em maiúsculas acima do título */
+  font-size: .7rem;
+  letter-spacing: .2em; /* espaçamento entre letras para legibilidade em caixa alta */
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: .6rem;
+}
+.stitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: .6rem;
+  line-height: 1.15; /* linha mais apertada para títulos grandes */
+}
+.ssub { color: var(--muted); font-size: .92rem; line-height: 1.6; }
+
+
+/* ============================================================
+   5. BOTÕES
+   ============================================================ */
+
+/* Botão primário — usado dentro de formulários (.form) */
+.btn {
+  width: 100%;
+  padding: .95rem;
+  background: var(--teal);
+  border: none;
+  border-radius: 6px;
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: .95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .2s;
+  margin-top: .5rem;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+}
+.btn:hover { background: var(--teal-l); }
+
+/* Variante secundária — transparente com borda */
+.btn-2 { background: transparent; border: 1px solid rgba(255, 255, 255, .2); }
+.btn-2:hover { background: rgba(255, 255, 255, .06); }
+
+/* Variante destrutiva — vermelho para ações irreversíveis */
+.btn-del { background: transparent; border: 1px solid var(--red); color: var(--red); }
+.btn-del:hover { background: rgba(224, 90, 90, .12); }
+
+/* Botão primário para seções de marketing (hero, CTAs) —
+   inline-block em vez de block para não ocupar largura total */
+.btn-primary {
+  background: var(--teal);
+  color: var(--white);
+  padding: .9rem 1.8rem;
+  border-radius: 4px;
+  border: none;
+  font-size: .95rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background .2s, transform .2s;
+  font-family: 'DM Sans', sans-serif;
+}
+.btn-primary:hover { background: var(--teal-l); transform: translateY(-2px); }
+
+/* Botão fantasma — transparente com borda, para ação secundária no hero */
+.btn-ghost {
+  border: 1px solid rgba(255, 255, 255, .2);
+  color: var(--white);
+  padding: .9rem 1.8rem;
+  border-radius: 4px;
+  font-size: .95rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: border-color .2s, transform .2s;
+  font-family: 'DM Sans', sans-serif;
+}
+.btn-ghost:hover { border-color: var(--teal-l); transform: translateY(-2px); }
+
+
+/* ============================================================
+   6. FORMULÁRIOS
+   ============================================================ */
+
+/* Container principal das páginas de formulário.
+   padding-top:8rem compensa a nav fixa (altura ~70px + margem). */
+.wrap { max-width: 560px; margin: 0 auto; padding: 8rem 1.5rem 4rem; }
+.wrap-sm { max-width: 420px; } /* login: form estreito */
+
+.head { margin-bottom: 2rem; }
+.head-center { text-align: center; } /* login: cabeçalho centralizado */
+
+/* Card de formulário com fundo levemente diferente do body */
+.form {
+  background: var(--deep);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, .08);
+  padding: 2.3rem;
+}
+.form h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 1.6rem; }
+
+/* Form group: agrupa label + input + mensagem de feedback */
+.fg { margin-bottom: 1.2rem; }
+.fg label {
+  display: block;
+  font-size: .75rem;
+  letter-spacing: .05em;
+  color: var(--muted);
+  margin-bottom: .45rem;
+  text-transform: uppercase;
+}
+
+/* Inputs e selects compartilham o mesmo estilo base */
+.fg input, .fg select {
+  width: 100%;
+  padding: .8rem 1rem;
+  background: rgba(255, 255, 255, .05); /* fundo semi-transparente sobre --deep */
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 6px;
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: .92rem;
+  transition: border-color .2s;
+  appearance: none; /* remove seta nativa do select (estilizado via CSS) */
+}
+.fg input:focus, .fg select:focus {
+  outline: none; /* remove outline padrão do browser */
+  border-color: var(--teal-l); /* substitui por borda colorida customizada */
+}
+
+/* Estados de validação dos inputs */
+.fg input.err { border-color: var(--red); }   /* CPF inválido, etc. */
+.fg input.ok  { border-color: var(--green); } /* CPF válido, etc. */
+
+/* Campos readonly (preenchidos pelo CEP) */
+.fg input:disabled, .fg input[readonly] { opacity: .6; cursor: not-allowed; }
+
+.fg select option { background: var(--deep); } /* fundo do dropdown */
+
+/* Mensagem de feedback inline abaixo do input */
+.msg { font-size: .75rem; margin-top: .35rem; min-height: 1rem; }
+/* min-height evita que o layout "pule" quando a mensagem aparece */
+.msg.e { color: var(--red); }
+.msg.s { color: var(--green); }
+
+/* Indicador de força de senha */
+.msg.forca { font-weight: 500; }
+.msg.forca.fraca  { color: var(--red); }
+.msg.forca.media  { color: var(--accent); }
+.msg.forca.forte  { color: var(--green); }
+
+/* Layouts de linha para campos lado a lado */
+.frow  { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.frow3 { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 1rem; }
+/* frow3: UF menor, número maior, complemento menor */
+
+/* Checkbox de privacidade */
+.priv {
+  display: flex;
+  align-items: flex-start;
+  gap: .6rem;
+  font-size: .83rem;
+  color: var(--muted);
+  margin: .3rem 0 1.2rem;
+  line-height: 1.45;
+  cursor: pointer;
+}
+.priv input { accent-color: var(--teal); margin-top: .15rem; flex-shrink: 0; }
+/* accent-color: colore o checkbox na cor teal sem JS */
+
+/* Wrapper do input de senha com botão olho sobreposto */
+.senha-wrap { position: relative; }
+.senha-wrap input { padding-right: 2.8rem; } /* espaço para o botão olho */
+.olho {
+  position: absolute;
+  right: .9rem;
+  top: 50%;
+  transform: translateY(-50%); /* centraliza verticalmente */
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: var(--muted);
+  padding: 0;
+  line-height: 1;
+  transition: color .2s;
+}
+.olho:hover { color: var(--teal-l); }
+
+
+/* ============================================================
+   7. ALERTAS
+   ============================================================ */
+/* display:none por padrão — JS adiciona classe 'ok' ou 'bad'
+   que muda para display:block */
+.alert { padding: .9rem 1rem; border-radius: 6px; font-size: .85rem; margin-bottom: 1.2rem; display: none; }
+.alert.ok  { background: rgba(63, 185, 138, .12); border: 1px solid rgba(63, 185, 138, .3); color: var(--green); display: block; }
+.alert.bad { background: rgba(224, 90, 90, .12);  border: 1px solid rgba(224, 90, 90, .3);  color: var(--red);   display: block; }
+
+
+/* ============================================================
+   8. LINKS AUXILIARES
+   ============================================================ */
+.link { text-align: center; margin-top: 1.5rem; font-size: .85rem; color: var(--muted); }
+.link a { color: var(--teal-l); text-decoration: none; }
+.link a:hover { text-decoration: underline; }
+
+
+/* ============================================================
+   9. CADASTRO SALVO (view de resumo)
+   ============================================================ */
+.saved {
+  margin-top: 2rem;
+  background: var(--deep);
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: none; /* mostrarSalvo() em cadastro.js muda para block */
+}
+.saved h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 1rem; }
+.saved .row {
+  display: flex;
+  justify-content: space-between; /* label à esquerda, valor à direita */
+  padding: .5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .06);
+  font-size: .85rem;
+}
+.saved .row span:first-child { color: var(--muted); } /* label em cinza */
+.saved .actions { display: flex; gap: .7rem; margin-top: 1.2rem; }
+.saved .actions .btn { margin-top: 0; } /* remove margin-top padrão do .btn */
+
+
+/* ============================================================
+   10. CAIXA DE SUCESSO / CONFIRMAÇÃO
+   ============================================================ */
+.ok-box {
+  display: none; /* agendar.js muda para block após confirmar */
+  text-align: center;
+  padding: 2.5rem 2rem;
+  background: var(--deep);
+  border: 1px solid rgba(63, 185, 138, .3); /* borda verde sutil */
+  border-radius: 16px;
+}
+.ok-box .ck {
+  /* Círculo com checkmark verde */
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: rgba(63, 185, 138, .15);
+  border: 1px solid rgba(63, 185, 138, .4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin: 0 auto 1.2rem;
+}
+.ok-box h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: .7rem; }
+.ok-box p  { color: var(--muted); font-size: .9rem; line-height: 1.6; margin-bottom: 1.5rem; }
+
+/* Resumo do agendamento dentro da caixa de sucesso */
+.resumo {
+  text-align: left;
+  background: rgba(255, 255, 255, .04);
+  border-radius: 10px;
+  padding: 1.2rem 1.4rem;
+  margin-bottom: 1.5rem;
+}
+.resumo .r {
+  display: flex;
+  justify-content: space-between;
+  padding: .45rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .06);
+  font-size: .85rem;
+}
+.resumo .r:last-child { border-bottom: none; }
+.resumo .r span:first-child { color: var(--muted); }
+
+
+/* ============================================================
+   11. AGENDAR: MODALIDADE E CAMPOS CONDICIONAIS
+   ============================================================ */
+
+/* Banner do profissional pré-selecionado */
+.prof-banner {
+  background: rgba(26, 138, 123, .12);
+  border: 1px solid rgba(26, 181, 162, .3);
+  color: var(--teal-l);
+  border-radius: 8px;
+  padding: .9rem 1.2rem;
+  font-size: .9rem;
+  margin-bottom: 1.2rem;
+  font-weight: 500;
+}
+
+/* Grid de 3 botões de modalidade */
+.modal-opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; }
+.modal-opt {
+  padding: .8rem .5rem;
+  text-align: center;
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 8px;
+  font-size: .85rem;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .2s;
+}
+.modal-opt:hover { border-color: rgba(26, 181, 162, .4); color: var(--white); }
+.modal-opt.sel   { background: var(--teal); border-color: var(--teal); color: var(--white); }
+/* .sel: adicionado por selModal() em agendar.js */
+
+/* Campo condicional de e-mail ou telefone.
+   Usa max-height para animar abertura/fechamento suavemente.
+   overflow:hidden é necessário para a transição de max-height funcionar. */
+.tel-wrap {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .3s ease, margin .3s ease;
+  margin: 0;
+}
+.tel-wrap.open {
+  max-height: 120px; /* valor maior que a altura real do conteúdo */
+  margin-top: 1.2rem;
+}
+
+
+/* ============================================================
+   12. PROFISSIONAIS: FILTROS E CARDS
+   ============================================================ */
+.wrap-lg { max-width: 1080px; } /* container largo para o grid de 3 colunas */
+
+/* Linha de botões de filtro */
+.filtros { display: flex; gap: .6rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+.filtro {
+  font-size: .82rem;
+  padding: .45rem 1.1rem;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, .04);
+  border: 1px solid rgba(255, 255, 255, .1);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .2s;
+  font-family: 'DM Sans', sans-serif;
+}
+.filtro:hover { border-color: rgba(26, 181, 162, .4); color: var(--white); }
+.filtro.ativo  { background: var(--teal); border-color: var(--teal); color: var(--white); }
+
+/* Grid de cards de profissionais */
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+.card {
+  background: var(--deep);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, .07);
+  padding: 1.8rem;
+  transition: transform .3s, border-color .3s;
+}
+.card:hover { transform: translateY(-5px); border-color: rgba(26, 181, 162, .25); }
+
+/* Topo do card: avatar + nome + registro */
+.card-top { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+.avatar {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal), var(--teal-l));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--white);
+  flex-shrink: 0; /* não encolhe quando o nome for longo */
+}
+.card-top h3 { font-size: 1.05rem; margin-bottom: .15rem; }
+.card-top .reg { font-size: .73rem; color: var(--muted); }
+
+/* Badge de especialidade */
+.especialidade {
+  display: inline-block;
+  font-size: .72rem;
+  padding: .25rem .7rem;
+  border-radius: 20px;
+  background: rgba(26, 138, 123, .12);
+  color: var(--teal-l);
+  border: 1px solid rgba(26, 181, 162, .2);
+  margin-bottom: 1rem;
+}
+
+.card p { font-size: .85rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.2rem; }
+.disp   { display: flex; align-items: center; gap: .5rem; font-size: .78rem; color: var(--muted); margin-bottom: 1.2rem; }
+
+/* Nota de rodapé (dados fictícios) */
+.nota { margin-top: 2.5rem; font-size: .75rem; color: var(--muted); text-align: center; opacity: .7; font-style: italic; }
+
+
+/* ============================================================
+   13. HOME: HERO, PROBLEMA, SERVIÇOS
+   ============================================================ */
+
+/* Hero: grid de 2 colunas, altura mínima de 100vh */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 7rem 3rem 4rem; /* 7rem top compensa a nav fixa */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Gradiente decorativo radial no fundo do hero */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -200px; right: -150px;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(26, 138, 123, .18) 0%, transparent 70%);
+  pointer-events: none; /* não bloqueia cliques */
+}
+
+/* Animações de entrada do hero (escalonadas por delay) */
+.hero-tag    { display: inline-block; font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--teal-l); border: 1px solid rgba(26, 181, 162, .35); padding: .3rem .8rem; border-radius: 2px; margin-bottom: 1.8rem; opacity: 0; animation: fadeUp .6s .2s forwards; }
+.hero h1     { font-family: 'Playfair Display', serif; font-size: clamp(2.6rem, 5vw, 4.2rem); line-height: 1.05; font-weight: 900; opacity: 0; animation: fadeUp .7s .35s forwards; margin-bottom: 1.2rem; }
+/* clamp(min, preferred, max): tamanho fluido que escala com a viewport */
+.hero h1 em  { color: var(--teal-l); font-style: normal; }
+.hero-text p { font-size: 1rem; line-height: 1.75; color: var(--muted); max-width: 460px; opacity: 0; animation: fadeUp .7s .5s forwards; margin-bottom: 2rem; }
+.hero-actions { display: flex; gap: 1rem; opacity: 0; animation: fadeUp .7s .65s forwards; }
+.hero-visual  { display: flex; justify-content: center; align-items: center; opacity: 0; animation: fadeIn .9s .5s forwards; }
+
+/* Stack de cards visuais no hero */
+.card-stack { position: relative; width: 320px; height: 360px; }
+.stat-card  { position: absolute; background: var(--deep); border: 1px solid rgba(255, 255, 255, .08); border-radius: 12px; padding: 1.6rem; }
+.card-main  { width: 280px; top: 30px; left: 20px; box-shadow: 0 30px 80px rgba(0, 0, 0, .5); }
+.card-main .num    { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; color: var(--teal-l); }
+.card-main .lbl    { color: var(--muted); font-size: .85rem; margin-top: .4rem; line-height: 1.4; }
+.divider           { width: 36px; height: 3px; background: var(--teal); border-radius: 2px; margin: .7rem 0; }
+.card-float        { width: 190px; bottom: 0; right: -20px; background: linear-gradient(135deg, rgba(26, 138, 123, .2), rgba(13, 27, 42, .9)); border-color: rgba(26, 181, 162, .25); }
+.card-float .icon  { font-size: 1.5rem; margin-bottom: .4rem; }
+.card-float .ml    { font-size: .8rem; color: var(--sand); font-weight: 500; }
+.card-float .ms    { font-size: .73rem; color: var(--muted); margin-top: .2rem; }
+
+/* Seções da home */
+section { padding: 5.5rem 3rem; }
+.section-label { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-bottom: .8rem; }
+.section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 700; line-height: 1.15; margin-bottom: 1rem; }
+.section-sub   { color: var(--muted); font-size: .95rem; line-height: 1.75; max-width: 560px; }
+
+/* Seção Problema */
+#problema { background: var(--deep); } /* fundo alternado para ritmo visual */
+.pgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-top: 3rem; }
+
+/* Bloco de citação com borda teal à esquerda */
+.qblock { border-left: 3px solid var(--teal); padding-left: 1.8rem; margin-bottom: 2rem; }
+.qblock blockquote { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-style: italic; line-height: 1.5; color: var(--sand); }
+
+/* Lista de barreiras */
+.blist { list-style: none; display: flex; flex-direction: column; gap: .9rem; }
+.bitem {
+  display: flex;
+  gap: 1rem;
+  background: rgba(255, 255, 255, .04);
+  border-radius: 8px;
+  padding: 1.1rem 1.3rem;
+  border: 1px solid rgba(255, 255, 255, .06);
+  transition: border-color .25s;
+}
+.bitem:hover { border-color: rgba(26, 181, 162, .3); }
+.btext strong { display: block; font-size: .9rem; margin-bottom: .2rem; }
+.btext span   { font-size: .82rem; color: var(--muted); line-height: 1.5; }
+
+/* Seção Serviços */
+#servicos { background: var(--navy); }
+.sgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; margin-top: 3.5rem; }
+.scard {
+  background: var(--deep);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, .07);
+  padding: 2rem 1.8rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform .3s, border-color .3s;
+}
+
+/* Linha teal que "desliza" para a direita ao hover */
+.scard::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--teal);
+  transform: scaleX(0);      /* começa invisível */
+  transform-origin: left;
+  transition: transform .35s;
+}
+.scard:hover { transform: translateY(-5px); border-color: rgba(26, 181, 162, .25); }
+.scard:hover::before { transform: scaleX(1); } /* revela a linha */
+
+.sicon { width: 48px; height: 48px; border-radius: 10px; background: rgba(26, 138, 123, .15); border: 1px solid rgba(26, 181, 162, .2); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 1.2rem; }
+.scard h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; margin-bottom: .7rem; }
+.scard p  { color: var(--muted); font-size: .85rem; line-height: 1.6; margin-bottom: 1rem; }
+
+/* Tags de especialidade */
+.tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+.tag  { font-size: .7rem; padding: .2rem .65rem; border-radius: 20px; background: rgba(26, 138, 123, .12); color: var(--teal-l); border: 1px solid rgba(26, 181, 162, .2); }
+
+
+/* ============================================================
+   14. MODAL PERSONALIZADO
+   ============================================================ */
+.modal-bg {
+  display: none; /* remover() em cadastro.js adiciona classe 'open' */
+  position: fixed;
+  inset: 0; /* atalho para top:0;right:0;bottom:0;left:0 */
+  z-index: 200; /* acima de tudo, incluindo a nav (z-index:100) */
+  background: rgba(13, 27, 42, .75);
+  backdrop-filter: blur(4px);
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.modal-bg.open { display: flex; } /* flex para centralizar .modal-box */
+
+.modal-box {
+  background: var(--deep);
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+  animation: modalIn .25s ease; /* entrada suave */
+}
+.modal-box h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: .7rem; }
+.modal-box p  { color: var(--muted); font-size: .88rem; line-height: 1.6; margin-bottom: 1.6rem; }
+.modal-actions { display: flex; gap: .8rem; }
+.modal-actions .btn { margin-top: 0; }
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(-15px) scale(.97); }
+  to   { opacity: 1; transform: translateY(0)     scale(1);   }
+}
+
+
+/* ============================================================
+   15. FOOTER
+   ============================================================ */
+footer {
+  background: var(--deep);
+  border-top: 1px solid rgba(255, 255, 255, .07);
+  padding: 2.5rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* no mobile empilha em vez de vazar */
+  gap: 1rem;
+}
+.flogo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 900; color: var(--teal-l); }
+.flogo span { color: var(--accent); }
+footer p { color: var(--muted); font-size: .8rem; }
+
+
+/* ============================================================
+   16. ANIMAÇÕES
+   ============================================================ */
+
+/* Animação de entrada dos elementos do hero */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Sistema de revelação no scroll (controlado por IntersectionObserver
+   em index.js). Elementos começam invisíveis e deslocados para baixo;
+   a classe .visible dispara a transição. */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .7s, transform .7s;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ============================================================
+   17. RESPONSIVO
+   ============================================================ */
+
+/* Tablet e mobile (< 900px): layouts de coluna única */
+@media (max-width: 900px) {
+  .hero, .pgrid { grid-template-columns: 1fr; } /* hero e problema viram 1 coluna */
+  .hero-visual  { display: none; } /* visual do hero some para economizar espaço */
+  .sgrid, .grid { grid-template-columns: 1fr; } /* serviços e profissionais em 1 coluna */
+}
+
+/* Mobile (< 600px): ajustes de espaçamento e layout */
+@media (max-width: 600px) {
+  nav           { padding: 1.1rem 1.3rem; }
+  nav ul        { gap: 1.1rem; }
+  .frow, .frow3 { grid-template-columns: 1fr; } /* campos lado a lado viram 1 coluna */
+  .wrap         { padding: 7rem 1.2rem 3rem; }
+  section       { padding: 4rem 1.5rem; }
+  footer        { flex-direction: column; text-align: center; }
+}

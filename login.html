@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ÂNCORA — Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">ÂNCO<span>R</span>A</a>
+  <ul>
+    <li><a href="index.html">Início</a></li>
+    <li><a href="profissionais.html" class="nav-prot">Profissionais</a></li>
+    <li><a href="cadastro.html" id="nav-cadastro">Cadastro</a></li>
+    <li><a href="agendar.html" class="nav-prot nav-cta">Agendar</a></li>
+    <li><a href="login.html" id="nav-login">Login</a></li>
+  </ul>
+</nav>
+
+<!-- ============================================================
+     CONTAINER
+     .wrap-sm: max-width:420px — mais estreito que o padrão
+     (560px) porque o formulário de login tem apenas 2 campos.
+     Formulário estreito reduz a distância entre label e input,
+     tornando o preenchimento mais natural.
+     ============================================================ -->
+<div class="wrap wrap-sm">
+  <div class="head head-center">
+    <!-- head-center: text-align:center — login é uma tela
+         focada, centralizar reforça o foco -->
+    <p class="slbl">Acesso</p>
+    <h1 class="stitle">Entrar</h1>
+    <p class="ssub">Use seu CPF e senha para acessar o sistema.</p>
+  </div>
+
+  <!-- Banner de alerta — mesmo padrão das outras páginas.
+       login.js usa a função alerta() para preencher. -->
+  <div class="alert" id="alert"></div>
+
+  <!-- ============================================================
+       FORMULÁRIO DE LOGIN
+       Sem <form> real — sem submit nativo, sem recarregamento.
+       login.js controla tudo via onclick e keydown (Enter).
+       ============================================================ -->
+  <div class="form" id="form-area">
+
+    <!-- CPF -->
+    <div class="fg">
+      <label for="cpf">CPF</label>
+      <input type="text" id="cpf" placeholder="000.000.000-00"
+             maxlength="14" autocomplete="username">
+      <!-- autocomplete="username": indica ao gerenciador de senhas
+           do browser que este é o campo de identificação.
+           Junto com autocomplete="current-password" no campo senha,
+           permite que o browser ofereça preenchimento automático
+           de credenciais salvas. -->
+    </div>
+
+    <!-- SENHA -->
+    <div class="fg">
+      <label for="senha">Senha</label>
+      <div class="senha-wrap">
+        <input type="password" id="senha" placeholder="••••••"
+               autocomplete="current-password">
+        <!-- current-password (diferente de new-password no cadastro):
+             diz ao browser para sugerir senhas já salvas,
+             não gerar uma nova -->
+        <button type="button" class="olho"
+                aria-label="Mostrar ou ocultar senha"
+                onclick="verSenha('senha', this)">👁</button>
+        <!-- verSenha() vem de utils.js -->
+      </div>
+    </div>
+
+    <button class="btn" onclick="entrar()">Entrar</button>
+
+    <!-- Link para cadastro — exibido abaixo do botão principal
+         para não competir com a ação primária (entrar) -->
+    <div class="link">
+      Ainda não tem cadastro? <a href="cadastro.html">Cadastre-se</a>
+    </div>
+  </div>
+</div>
+
+
+<footer>
+  <div class="flogo">ÂNCO<span>R</span>A</div>
+  <p>Plataforma de Saúde Mental Masculina · Acesso gratuito e sigiloso</p>
+</footer>
+
+<!-- Ordem obrigatória:
+     1. nav.js   — ajusta a navegação
+     2. utils.js — define verSenha() e aplicarMascaraCPF()
+     3. login.js — usa as funções acima -->
+<script src="nav.js"></script>
+<script src="utils.js"></script>
+<script src="login.js"></script>
+
+</body>
+</html>

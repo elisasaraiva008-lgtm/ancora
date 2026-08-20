@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ÂNCORA — Profissionais</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">ÂNCO<span>R</span>A</a>
+  <ul>
+    <li><a href="index.html">Início</a></li>
+    <li><a href="profissionais.html">Profissionais</a></li>
+    <li><a href="cadastro.html" id="nav-cadastro">Cadastro</a></li>
+    <li><a href="agendar.html" class="nav-cta">Agendar</a></li>
+    <li><a href="login.html" id="nav-login">Login</a></li>
+  </ul>
+</nav>
+
+<!-- ============================================================
+     CONTAINER LARGO
+     .wrap-lg: max-width:1080px — mais largo que o padrão (560px)
+     porque o grid de cards precisa de espaço para 3 colunas.
+     ============================================================ -->
+<div class="wrap wrap-lg">
+  <div class="head">
+    <p class="slbl">Quem vai te acolher</p>
+    <h1 class="stitle">Profissionais disponíveis</h1>
+    <p class="ssub">Uma equipe preparada para escutar sem julgamento. Escolha por especialidade e agende no horário que couber na sua rotina.</p>
+  </div>
+
+  <!-- ============================================================
+       FILTROS DE ESPECIALIDADE
+       Botões que chamam filtrar() em profissionais.js.
+       'ativo' começa em "Todos" — CSS aplica fundo teal.
+       onclick passa 'this' para filtrar() poder mover o 'ativo'.
+       ============================================================ -->
+  <div class="filtros">
+    <button class="filtro ativo" onclick="filtrar('todos', this)">Todos</button>
+    <button class="filtro" onclick="filtrar('psicologia', this)">Psicologia</button>
+    <button class="filtro" onclick="filtrar('enfermagem', this)">Enfermagem</button>
+    <button class="filtro" onclick="filtrar('social', this)">Assistência Social</button>
+  </div>
+
+  <!-- ============================================================
+       GRID DE CARDS
+       3 colunas no desktop, 1 no mobile.
+       data-cat: usado pelo filtro em profissionais.js para
+       mostrar/esconder cards sem recarregar a página.
+       ============================================================ -->
+  <div class="grid" id="grid">
+
+    <!-- CARD: Levi Costa — Psicologia -->
+    <div class="card" data-cat="psicologia">
+      <div class="card-top">
+        <div class="avatar">LC</div>
+        <!-- .avatar: círculo com gradiente teal e iniciais do nome.
+             Substitui foto real — projeto é demonstração. -->
+        <div>
+          <h3>Levi Costa</h3>
+          <div class="reg">CRP 00/00000</div>
+          <!-- CRP: Conselho Regional de Psicologia.
+               Número fictício — nota no rodapé avisa sobre isso. -->
+        </div>
+      </div>
+      <span class="especialidade">Psicologia</span>
+      <p>Escuta acolhedora com foco em ansiedade, estresse e pressão masculina. Abordagem sem julgamentos.</p>
+      <div class="disp">Atendimento: seg, qua e sex</div>
+      <a href="agendar.html?esp=Psicologia&prof=Levi Costa" class="btn">Agendar</a>
+      <!-- URL com query params: agendar.js lê ?esp e ?prof para
+           pré-selecionar a especialidade e exibir o banner do
+           profissional na página de agendamento. -->
+    </div>
+
+    <!-- CARD: Joyce Kelly — Psicologia -->
+    <div class="card" data-cat="psicologia">
+      <div class="card-top">
+        <div class="avatar">JK</div>
+        <div><h3>Joyce Kelly</h3><div class="reg">CRP 00/00000</div></div>
+      </div>
+      <span class="especialidade">Psicologia</span>
+      <p>Apoio emocional e orientação em saúde mental. Atendimento voltado a homens em sofrimento silencioso.</p>
+      <div class="disp">Atendimento: ter e qui</div>
+      <a href="agendar.html?esp=Psicologia&prof=Joyce Kelly" class="btn">Agendar</a>
+    </div>
+
+    <!-- CARD: Elisa Saraiva — Enfermagem -->
+    <div class="card" data-cat="enfermagem">
+      <div class="card-top">
+        <div class="avatar">ES</div>
+        <div>
+          <h3>Elisa Saraiva</h3>
+          <div class="reg">COREN 000000</div>
+          <!-- COREN: Conselho Regional de Enfermagem -->
+        </div>
+      </div>
+      <span class="especialidade">Enfermagem</span>
+      <p>Orientações de saúde, acompanhamento de bem-estar e encaminhamento para serviços especializados.</p>
+      <div class="disp">Atendimento: seg a sex</div>
+      <a href="agendar.html?esp=Enfermagem&prof=Elisa Saraiva" class="btn">Agendar</a>
+    </div>
+
+    <!-- CARD: Allice Coutinho — Assistência Social -->
+    <div class="card" data-cat="social">
+      <div class="card-top">
+        <div class="avatar">AC</div>
+        <div>
+          <h3>Allice Coutinho</h3>
+          <div class="reg">CRESS 00000</div>
+          <!-- CRESS: Conselho Regional de Serviço Social -->
+        </div>
+      </div>
+      <span class="especialidade">Assistência Social</span>
+      <p>Orientação sobre serviços públicos, programas sociais e apoio em situações de vulnerabilidade.</p>
+      <div class="disp">Atendimento: qua e sex</div>
+      <a href="agendar.html?esp=Assistência Social&prof=Allice Coutinho" class="btn">Agendar</a>
+    </div>
+
+    <!-- CARD: Vinícius Nogueira — Enfermagem -->
+    <div class="card" data-cat="enfermagem">
+      <div class="card-top">
+        <div class="avatar">VN</div>
+        <div><h3>Vinícius Nogueira</h3><div class="reg">COREN 000000</div></div>
+      </div>
+      <span class="especialidade">Enfermagem</span>
+      <p>Triagem inicial e acolhimento em saúde, ajudando você a encontrar o caminho certo de cuidado.</p>
+      <div class="disp">Atendimento: seg, ter e qui</div>
+      <a href="agendar.html?esp=Enfermagem&prof=Vinícius Nogueira" class="btn">Agendar</a>
+    </div>
+
+    <!-- CARD: Matheus Souza — Assistência Social -->
+    <div class="card" data-cat="social">
+      <div class="card-top">
+        <div class="avatar">MS</div>
+        <div><h3>Matheus Souza</h3><div class="reg">CRESS 00000</div></div>
+      </div>
+      <span class="especialidade">Assistência Social</span>
+      <p>Apoio para acessar direitos e benefícios, reduzindo barreiras de quem já enfrenta dificuldades.</p>
+      <div class="disp">Atendimento: ter, qui e sáb</div>
+      <a href="agendar.html?esp=Assistência Social&prof=Matheus Souza" class="btn">Agendar</a>
+    </div>
+
+  </div>
+  <!-- fim .grid -->
+
+  <!-- Aviso de que os dados são fictícios — importante para
+       deixar claro que é um projeto de demonstração -->
+  <p class="nota">* Profissionais e registros ilustrativos, usados apenas para fins de demonstração do projeto.</p>
+</div>
+
+
+<footer>
+  <div class="flogo">ÂNCO<span>R</span>A</div>
+  <p>Plataforma de Saúde Mental Masculina · Acesso gratuito e sigiloso</p>
+</footer>
+
+<!-- Sem utils.js aqui: profissionais.js não usa nenhuma
+     função de utils.js -->
+<script src="nav.js"></script>
+<script src="profissionais.js"></script>
+
+</body>
+</html>

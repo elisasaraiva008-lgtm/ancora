@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ÂNCORA — Agendar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">ÂNCO<span>R</span>A</a>
+  <ul>
+    <li><a href="index.html">Início</a></li>
+    <li><a href="profissionais.html" class="nav-prot">Profissionais</a></li>
+    <li><a href="cadastro.html" id="nav-cadastro">Cadastro</a></li>
+    <li><a href="agendar.html" class="nav-prot nav-cta">Agendar</a></li>
+    <li><a href="login.html" id="nav-login">Login</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+  <div class="head">
+    <p class="slbl">Marque seu horário</p>
+    <h1 class="stitle">Agendar atendimento</h1>
+    <p class="ssub">Escolha a especialidade, a modalidade e o melhor horário. É rápido e gratuito.</p>
+  </div>
+
+  <div class="alert" id="alert"></div>
+
+  <!-- Banner do profissional pré-selecionado.
+       Exibido apenas quando a página é acessada via URL com
+       ?prof=Nome (vindo de profissionais.html).
+       agendar.js preenche o texto e muda display para 'block'. -->
+  <div class="prof-banner" id="prof-escolhido" style="display:none"></div>
+
+  <!-- ============================================================
+       FORMULÁRIO DE AGENDAMENTO
+       agendar.js esconde este div e exibe #ok após confirmação.
+       ============================================================ -->
+  <div class="form" id="form-area">
+
+    <!-- ESPECIALIDADE -->
+    <div class="fg">
+      <label for="especialidade">Especialidade</label>
+      <select id="especialidade">
+        <option value="">Selecione...</option>
+        <option>Psicologia</option>
+        <option>Enfermagem</option>
+        <option>Assistência Social</option>
+      </select>
+      <!-- Se acessado via ?esp=Psicologia, agendar.js:
+           1. Define select.value = 'Psicologia'
+           2. Define select.disabled = true (não pode trocar)
+           3. Salva select.dataset.fixo = 'Psicologia' como backup -->
+    </div>
+
+    <!-- MODALIDADE -->
+    <div class="fg">
+      <label>Modalidade</label>
+      <div class="modal-opts">
+        <!-- Grid de 3 botões. onclick passa 'this' para
+             selModal() poder destacar o botão clicado. -->
+        <div class="modal-opt" onclick="selModal('Presencial', this)">Presencial</div>
+        <div class="modal-opt" onclick="selModal('Vídeo', this)">Vídeo</div>
+        <div class="modal-opt" onclick="selModal('Telefone', this)">Telefone</div>
+      </div>
+
+      <!-- CAMPO E-MAIL — aparece só se modalidade = Vídeo
+           .tel-wrap: max-height:0 (fechado) → .tel-wrap.open: max-height:120px
+           A transição CSS cria o efeito de deslizar para baixo -->
+      <div class="tel-wrap" id="email-wrap">
+        <div class="fg" style="margin:0">
+          <label for="email">E-mail (para receber o link da videochamada)</label>
+          <input type="email" id="email" placeholder="seu@email.com">
+        </div>
+      </div>
+
+      <!-- CAMPO TELEFONE — aparece só se modalidade = Telefone -->
+      <div class="tel-wrap" id="tel-wrap">
+        <div class="fg" style="margin:0">
+          <label for="telefone">Telefone para contato</label>
+          <input type="tel" id="telefone" placeholder="(00) 00000-0000" maxlength="15">
+          <!-- maxlength="15": (00) 00000-0000 = 15 caracteres formatados -->
+        </div>
+      </div>
+    </div>
+
+    <!-- DATA E HORÁRIO em linha -->
+    <div class="frow">
+      <div class="fg">
+        <label for="data">Data</label>
+        <input type="date" id="data">
+        <!-- type="date": picker nativo do browser.
+             agendar.js define min/max via JS (relativo a "hoje")
+             porque não é possível escrever datas dinâmicas no HTML. -->
+      </div>
+      <div class="fg">
+        <label for="horario">Horário</label>
+        <select id="horario">
+          <option value="">Selecione...</option>
+          <!-- Horários fixos — em produção viriam de uma API
+               de disponibilidade do profissional -->
+          <option>08:00</option><option>09:00</option><option>10:00</option>
+          <option>14:00</option><option>15:00</option><option>16:00</option>
+          <option>18:00</option><option>19:00</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn" onclick="agendar()">Confirmar agendamento</button>
+  </div>
+  <!-- fim #form-area -->
+
+
+  <!-- ============================================================
+       TELA DE CONFIRMAÇÃO
+       Começa display:none. agendar() preenche os spans e
+       muda para display:block após validação bem-sucedida.
+
+       Linhas condicionais (r-prof-row, r-email-row, r-tel-row)
+       ficam display:none por padrão e são exibidas pelo JS
+       apenas quando há dados para mostrar.
+       ============================================================ -->
+  <div class="ok-box" id="ok">
+    <div class="ck">✓</div>
+    <!-- .ck: círculo verde com checkmark — feedback visual de sucesso -->
+
+    <h3>Agendamento registrado!</h3>
+    <p id="ok-msg">
+      <!-- Texto preenchido por agendar() conforme a modalidade:
+           Vídeo     → "O link será enviado ao seu e-mail..."
+           Telefone  → "O contato será feito pelo telefone..."
+           Presencial → "Anote e leve ao atendimento..." -->
+    </p>
+
+    <div class="resumo">
+      <!-- Linha do profissional: visível apenas se veio de profissionais.html -->
+      <div class="r" id="r-prof-row" style="display:none">
+        <span>Profissional</span><span id="r-prof"></span>
+      </div>
+      <div class="r"><span>Especialidade</span><span id="r-esp"></span></div>
+      <div class="r"><span>Modalidade</span><span id="r-mod"></span></div>
+      <!-- Linha de e-mail: visível apenas se modalidade = Vídeo -->
+      <div class="r" id="r-email-row" style="display:none">
+        <span>E-mail</span><span id="r-email"></span>
+      </div>
+      <!-- Linha de telefone: visível apenas se modalidade = Telefone -->
+      <div class="r" id="r-tel-row" style="display:none">
+        <span>Telefone</span><span id="r-tel"></span>
+      </div>
+      <div class="r"><span>Data</span><span id="r-data"></span></div>
+      <div class="r"><span>Horário</span><span id="r-hora"></span></div>
+    </div>
+
+    <button class="btn btn-2" onclick="novo()">Fazer novo agendamento</button>
+    <!-- btn-2: estilo secundário (transparente com borda).
+         novo() reseta o formulário completo para um segundo agendamento. -->
+  </div>
+</div>
+
+
+<footer>
+  <div class="flogo">ÂNCO<span>R</span>A</div>
+  <p>Plataforma de Saúde Mental Masculina · Acesso gratuito e sigiloso</p>
+</footer>
+
+<!-- nav.js primeiro — sem utils.js aqui porque agendar.js
+     não usa verSenha() nem validarCPF() -->
+<script src="nav.js"></script>
+<script src="agendar.js"></script>
+
+</body>
+</html>

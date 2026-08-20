@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<!-- Define o tipo do documento como HTML5 — sem isso alguns
+     navegadores entram em "quirks mode" e renderizam diferente -->
+<html lang="pt-BR">
+<!-- lang="pt-BR" ajuda leitores de tela e ferramentas de
+     tradução a identificar o idioma correto da página -->
+
+<head>
+  <meta charset="UTF-8">
+  <!-- UTF-8 suporta acentos, cedilha e todos os caracteres
+       especiais do português. Deve ser o primeiro meta tag. -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Essencial para responsividade mobile: sem isso o navegador
+       renderiza a página com zoom out, ignorando o CSS responsivo.
+       width=device-width = usa a largura real da tela
+       initial-scale=1.0 = sem zoom inicial -->
+
+  <title>ÂNCORA — Saúde Mental Masculina</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Carrega duas fontes do Google Fonts:
+       • Playfair Display (700, 900) — fonte serif para títulos,
+         dá personalidade e peso emocional ao projeto
+       • DM Sans (400, 500) — fonte sans-serif para corpo,
+         limpa e legível em qualquer tamanho
+       display=swap: mostra texto com fonte fallback enquanto
+       carrega, evitando "flash de texto invisível" (FOIT) -->
+
+  <link rel="stylesheet" href="estilo.css">
+  <!-- CSS compartilhado entre todas as páginas.
+       Carregado no <head> para que os estilos estejam prontos
+       antes do HTML ser renderizado (evita flash sem estilo). -->
+</head>
+
+<body>
+
+<!-- ============================================================
+     NAVEGAÇÃO FIXA
+     position:fixed no CSS — permanece visível ao rolar a página.
+     backdrop-filter:blur cria o efeito de vidro fosco.
+     Os links .nav-prot são bloqueados para visitantes via nav.js.
+     ============================================================ -->
+<nav>
+  <a href="index.html" class="logo">ÂNCO<span>R</span>A</a>
+  <!-- O <span> no "R" recebe cor de destaque (--accent) via CSS,
+       criando o efeito visual da identidade da marca -->
+  <ul>
+    <li><a href="index.html">Início</a></li>
+    <li><a href="profissionais.html" class="nav-prot">Profissionais</a></li>
+    <!-- nav-prot: nav.js adiciona classe 'bloqueado' para visitantes
+         (pointer-events:none + opacity reduzida) -->
+    <li><a href="cadastro.html" id="nav-cadastro">Cadastro</a></li>
+    <!-- id="nav-cadastro": nav.js esconde este link quando logado -->
+    <li><a href="agendar.html" class="nav-prot nav-cta">Agendar</a></li>
+    <!-- nav-cta: recebe estilo de botão destacado (fundo teal) -->
+    <li><a href="login.html" id="nav-login">Login</a></li>
+    <!-- id="nav-login": nav.js troca para "Sair" quando logado -->
+  </ul>
+</nav>
+
+
+<!-- ============================================================
+     SEÇÃO HERO
+     Grid de duas colunas: texto à esquerda, visual à direita.
+     No mobile (< 900px) o visual some e vira coluna única.
+     As animações fadeUp/fadeIn são definidas em estilo.css
+     e usam opacity:0 + animation com delay escalonado para
+     criar efeito de entrada sequencial dos elementos.
+     ============================================================ -->
+<section class="hero">
+  <div class="hero-text">
+    <span class="hero-tag">Plataforma de Saúde Mental Masculina</span>
+    <!-- hero-tag: label pequena acima do título, estilo eyebrow -->
+
+    <h1>Pedir ajuda é<br><em>sinal de força.</em></h1>
+    <!-- <em> recebe cor --teal-l via CSS, destacando o conceito
+         central da plataforma sem usar negrito -->
+
+    <p>Plataforma gratuita para homens em vulnerabilidade agendarem atendimentos com profissionais de saúde mental — sem julgamento, sem burocracia.</p>
+
+    <div class="hero-actions" id="cta-hero">
+      <a href="cadastro.html" class="btn-primary">Criar cadastro</a>
+      <a href="login.html" class="btn-ghost">Já tenho conta</a>
+      <!-- id="cta-hero": index.js substitui estes botões por
+           "Agendar atendimento" quando o usuário está logado -->
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <!-- Visual decorativo: dois cartões empilhados com estatística
+         e badge. Desaparece no mobile para não competir com o texto. -->
+    <div class="card-stack">
+      <div class="stat-card card-main">
+        <div class="num">79%</div>
+        <!-- Número grande em Playfair Display para impacto visual -->
+        <div class="divider"></div>
+        <div class="lbl">dos suicídios no Brasil são de homens (DATASUS, 2013–2023). A saúde mental masculina é urgente.</div>
+      </div>
+      <div class="stat-card card-float">
+        <!-- card-float: posicionado absolute sobre o card principal,
+             cria profundidade de camadas sem usar sombras pesadas -->
+        <div class="icon">🛡️</div>
+        <div class="ml">100% Gratuito</div>
+        <div class="ms">Sem custo, sem filas, sem vergonha.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SEÇÃO PROBLEMA
+     Fundo --deep (azul mais escuro) para diferenciar visualmente
+     do hero. Grid de duas colunas: argumento à esquerda,
+     lista de barreiras à direita.
+     Elementos com classe .reveal são animados pelo
+     IntersectionObserver em index.js ao entrarem na viewport.
+     ============================================================ -->
+<section id="problema">
+  <div class="pgrid">
+    <div>
+      <p class="section-label">A Realidade</p>
+      <h2 class="section-title">A pressão que ninguém vê</h2>
+      <p class="section-sub">"Homem não chora." "Você tem que aguentar." Essas frases constroem, ao longo de anos, uma armadura que aprisiona.</p>
+      <br>
+      <div class="qblock reveal">
+        <!-- reveal: começa invisível, aparece ao rolar via JS -->
+        <blockquote>"Muitos homens chegam ao limite antes de pedir ajuda — não porque não sofrem, mas porque nunca lhes ensinaram que podem."</blockquote>
+      </div>
+    </div>
+
+    <ul class="blist">
+      <!-- Cada .bitem tem class="reveal" para animação escalonada -->
+      <li class="bitem reveal">
+        <div class="btext">
+          <strong>Silêncio cultural</strong>
+          <span>A sociedade condicionou homens a não falar sobre sentimentos, criando uma pressão silenciosa.</span>
+        </div>
+      </li>
+      <li class="bitem reveal">
+        <div class="btext">
+          <strong>Vergonha e medo de julgamento</strong>
+          <span>O medo de parecer fraco afasta muitos do atendimento que precisam.</span>
+        </div>
+      </li>
+      <li class="bitem reveal">
+        <div class="btext">
+          <strong>Falta de informação e acesso</strong>
+          <span>Muitos não sabem onde buscar ajuda. Serviços raramente têm canais simples e acolhedores.</span>
+        </div>
+      </li>
+      <li class="bitem reveal">
+        <div class="btext">
+          <strong>Efeito dominó</strong>
+          <span>Problemas não tratados afetam trabalho, relacionamentos e família — criando um ciclo de sofrimento.</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SEÇÃO SERVIÇOS
+     Volta para fundo --navy (mais claro que --deep) para
+     alternar o ritmo visual da página.
+     Grid de 3 colunas com .scard — no mobile vira coluna única.
+     Cada card tem um ::before pseudo-elemento (linha teal no topo)
+     que cresce ao hover via transform:scaleX().
+     ============================================================ -->
+<section id="servicos">
+  <div class="reveal">
+    <p class="section-label">O que oferecemos</p>
+    <h2 class="section-title">Cuidado integral, acessível a todos</h2>
+    <p class="section-sub">Atendimentos gratuitos com profissionais qualificados, adaptados à realidade de quem busca apoio.</p>
+  </div>
+
+  <div class="sgrid">
+    <div class="scard reveal">
+      <div class="sicon">🧠</div>
+      <h3>Psicologia</h3>
+      <p>Suporte emocional com psicólogos em escuta ativa, sem julgamentos. Um espaço seguro para falar.</p>
+      <div class="tags">
+        <span class="tag">Apoio emocional</span>
+        <span class="tag">Escuta psicológica</span>
+        <span class="tag">Saúde mental</span>
+      </div>
+    </div>
+
+    <div class="scard reveal">
+      <div class="sicon">🩺</div>
+      <h3>Enfermagem</h3>
+      <p>Orientações de saúde e acompanhamento de bem-estar com encaminhamento adequado.</p>
+      <div class="tags">
+        <span class="tag">Orientações</span>
+        <span class="tag">Bem-estar</span>
+        <span class="tag">Encaminhamento</span>
+      </div>
+    </div>
+
+    <div class="scard reveal">
+      <div class="sicon">🤝</div>
+      <h3>Assistência Social</h3>
+      <p>Orientação sobre serviços públicos e programas sociais para situações de vulnerabilidade.</p>
+      <div class="tags">
+        <span class="tag">Serviços públicos</span>
+        <span class="tag">Vulnerabilidade</span>
+        <span class="tag">Programas sociais</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SEÇÃO CTA FINAL
+     Centralizada, max-width 620px para não esticar demais.
+     id="cta-agendar": index.js substitui os botões quando logado,
+     igual ao #cta-hero no topo da página.
+     ============================================================ -->
+<section id="agendar">
+  <div class="reveal" style="max-width:620px;margin:0 auto;text-align:center">
+    <p class="section-label" style="margin:0 auto">Primeiro passo</p>
+    <h2 class="section-title">Agende seu atendimento</h2>
+    <p class="section-sub" style="margin:0 auto 2rem">Gratuito, rápido e sem burocracia. Você merece cuidado — e buscar ajuda é o ato mais corajoso que existe.</p>
+    <div id="cta-agendar">
+      <a href="cadastro.html" class="btn-primary">Criar cadastro</a>
+      <a href="login.html" class="btn-ghost" style="margin-left:1rem">Já tenho conta</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     FOOTER
+     Flex com justify-content:space-between — logo à esquerda,
+     texto à direita. No mobile (< 600px) vira coluna centralizada.
+     ============================================================ -->
+<footer>
+  <div class="flogo">ÂNCO<span>R</span>A</div>
+  <p>Plataforma de Saúde Mental Masculina · Acesso gratuito e sigiloso</p>
+</footer>
+
+<!-- Scripts no final do <body>: o HTML já está renderizado
+     quando os scripts rodam, então getElementById() funciona
+     sem precisar de DOMContentLoaded na maioria dos casos. -->
+<script src="nav.js"></script>
+<!-- nav.js primeiro: ajusta a nav antes de qualquer outro script -->
+<script src="index.js"></script>
+
+</body>
+</html>

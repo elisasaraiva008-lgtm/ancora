@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ÂNCORA — Cadastro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">ÂNCO<span>R</span>A</a>
+  <ul>
+    <li><a href="index.html">Início</a></li>
+    <li><a href="profissionais.html" class="nav-prot">Profissionais</a></li>
+    <li><a href="cadastro.html" id="nav-cadastro">Cadastro</a></li>
+    <li><a href="agendar.html" class="nav-prot nav-cta">Agendar</a></li>
+    <li><a href="login.html" id="nav-login">Login</a></li>
+  </ul>
+</nav>
+
+<!-- ============================================================
+     CONTAINER PRINCIPAL
+     .wrap: max-width:560px, centralizado, com padding que
+     considera a nav fixa no topo (padding-top:8rem).
+     ============================================================ -->
+<div class="wrap">
+  <div class="head">
+    <p class="slbl">Primeiro passo</p>
+    <h1 class="stitle">Criar cadastro</h1>
+    <p class="ssub">Seus dados ficam protegidos. O cadastro permite confirmar o atendimento com segurança.</p>
+  </div>
+
+  <!-- Banner de alerta/sucesso — começa display:none via CSS.
+       cadastro.js adiciona classe 'ok' (verde) ou 'bad' (vermelho)
+       que muda para display:block -->
+  <div class="alert" id="alert"></div>
+
+  <!-- ============================================================
+       FORMULÁRIO DE CADASTRO
+       Sem tag <form> real — o envio é controlado inteiramente
+       por cadastro.js via onclick e addEventListener.
+       Isso evita o comportamento padrão de submit do browser
+       (recarregar a página) sem precisar de event.preventDefault().
+       ============================================================ -->
+  <div class="form" id="form-area">
+
+    <!-- NOME -->
+    <div class="fg">
+      <!-- .fg = "form group": label + input + msg de feedback -->
+      <label for="nome">Nome completo</label>
+      <input type="text" id="nome" placeholder="Seu nome" autocomplete="name">
+      <!-- autocomplete="name": sugere nomes salvos no navegador -->
+      <div class="msg" id="msg-nome"></div>
+      <!-- .msg: espaço reservado para feedback inline do campo.
+           Começa vazio; cadastro.js preenche quando necessário -->
+    </div>
+
+    <!-- CPF -->
+    <div class="fg">
+      <label for="cpf">CPF</label>
+      <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14">
+      <!-- maxlength="14": 11 dígitos + 2 pontos + 1 traço = 14 chars.
+           Impede digitação além do tamanho formatado. -->
+      <div class="msg" id="msg-cpf"></div>
+      <!-- msg-cpf: preenchido pelo listener 'blur' em cadastro.js
+           com "CPF válido" (verde) ou "CPF inválido" (vermelho) -->
+    </div>
+
+    <!-- CEP -->
+    <div class="fg">
+      <label for="cep">CEP</label>
+      <input type="text" id="cep" placeholder="00000-000" maxlength="9">
+      <!-- maxlength="9": 8 dígitos + 1 traço -->
+      <div class="msg" id="msg-cep"></div>
+      <!-- msg-cep: mostra "Buscando...", "Endereço preenchido"
+           ou erro da API ViaCEP -->
+    </div>
+
+    <!-- ENDEREÇO (preenchido automaticamente pelo CEP) -->
+    <div class="fg">
+      <label for="endereco">Endereço</label>
+      <input type="text" id="endereco" placeholder="Preenchido pelo CEP" readonly>
+      <!-- readonly: usuário não edita; ViaCEP preenche via JS.
+           CSS aplica opacity:0.6 e cursor:not-allowed para sinalizar. -->
+    </div>
+
+    <!-- BAIRRO E CIDADE em linha -->
+    <div class="frow">
+      <!-- .frow: grid de 2 colunas. No mobile (< 600px) vira coluna única. -->
+      <div class="fg">
+        <label for="bairro">Bairro</label>
+        <input type="text" id="bairro" readonly>
+      </div>
+      <div class="fg">
+        <label for="cidade">Cidade</label>
+        <input type="text" id="cidade" readonly>
+      </div>
+    </div>
+
+    <!-- UF, NÚMERO E COMPLEMENTO em linha (3 colunas) -->
+    <div class="frow3">
+      <!-- .frow3: grid 1fr 2fr 1fr — número ocupa mais espaço -->
+      <div class="fg">
+        <label for="uf">UF</label>
+        <input type="text" id="uf" readonly>
+      </div>
+      <div class="fg">
+        <label for="numero">Número</label>
+        <input type="text" id="numero" placeholder="Nº">
+        <!-- número é editável: ViaCEP não retorna número do imóvel -->
+      </div>
+      <div class="fg">
+        <label for="complemento">Compl.</label>
+        <input type="text" id="complemento" placeholder="Apto">
+      </div>
+    </div>
+
+    <!-- SENHA E CONFIRMAÇÃO em linha -->
+    <div class="frow">
+      <div class="fg">
+        <label for="senha">Senha</label>
+        <div class="senha-wrap">
+          <!-- .senha-wrap: position:relative para posicionar o botão
+               de olho dentro do campo -->
+          <input type="password" id="senha" placeholder="••••••" autocomplete="new-password">
+          <!-- autocomplete="new-password": indica ao browser que é
+               criação de senha (não preenchimento automático) -->
+          <button type="button" class="olho" aria-label="Mostrar ou ocultar senha"
+                  onclick="verSenha('senha', this)">👁</button>
+          <!-- type="button": evita que o botão faça submit acidental.
+               aria-label: acessibilidade para leitores de tela.
+               verSenha() vem de utils.js -->
+        </div>
+        <div class="msg" id="msg-senha"></div>
+        <!-- msg-senha: indicador de força (Fraca/Média/Forte) -->
+      </div>
+
+      <div class="fg">
+        <label for="senha2">Confirmar senha</label>
+        <div class="senha-wrap">
+          <input type="password" id="senha2" placeholder="••••••" autocomplete="new-password">
+          <button type="button" class="olho" aria-label="Mostrar ou ocultar senha"
+                  onclick="verSenha('senha2', this)">👁</button>
+        </div>
+        <div class="msg" id="msg-senha2"></div>
+        <!-- msg-senha2: "As senhas conferem" ou "não conferem" em tempo real -->
+      </div>
+    </div>
+
+    <!-- CHECKBOX DE PRIVACIDADE -->
+    <label class="priv">
+      <input type="checkbox" id="anonimo">
+      Não exibir minha identidade (nome e CPF) para o profissional
+      <!-- Quando marcado, u.anonimo = true é gravado no localStorage
+           e exibido como "Oculta para o profissional" no resumo -->
+    </label>
+
+    <button class="btn" onclick="salvar()">Cadastrar</button>
+  </div>
+  <!-- fim #form-area -->
+
+
+  <!-- ============================================================
+       VIEW DE CADASTRO SALVO
+       Exibida por mostrarSalvo() quando já existe 'usuario'
+       no localStorage. Começa com display:none via CSS.
+       ============================================================ -->
+  <div class="saved" id="saved">
+    <h3>Cadastro salvo</h3>
+    <div class="row"><span>Nome</span><span id="s-nome"></span></div>
+    <div class="row"><span>CPF</span><span id="s-cpf"></span></div>
+    <div class="row"><span>Endereço</span><span id="s-end"></span></div>
+    <div class="row"><span>Cidade/UF</span><span id="s-cid"></span></div>
+    <div class="row"><span>Identidade</span><span id="s-priv"></span></div>
+    <div class="actions">
+      <button class="btn btn-2" onclick="carregarParaEditar()">Alterar dados</button>
+      <button class="btn btn-del" onclick="remover()">Remover cadastro</button>
+      <!-- btn-del: borda + texto vermelhos. Abre o modal de
+           confirmação em vez de remover diretamente. -->
+    </div>
+  </div>
+</div>
+<!-- fim .wrap -->
+
+
+<footer>
+  <div class="flogo">ÂNCO<span>R</span>A</div>
+  <p>Plataforma de Saúde Mental Masculina · Acesso gratuito e sigiloso</p>
+</footer>
+
+<!-- Ordem de carregamento obrigatória:
+     1. nav.js    — ajusta a navegação
+     2. utils.js  — define verSenha(), validarCPF() etc.
+     3. cadastro.js — usa as funções acima -->
+<script src="nav.js"></script>
+<script src="utils.js"></script>
+<script src="cadastro.js"></script>
+
+
+<!-- ============================================================
+     MODAL DE CONFIRMAÇÃO DE REMOÇÃO
+     Fica fora do .wrap para cobrir a tela inteira (position:fixed).
+     Começa display:none; remover() adiciona classe 'open'
+     que muda para display:flex via CSS, centralizando o .modal-box.
+     ============================================================ -->
+<div class="modal-bg" id="modal-remover">
+  <div class="modal-box">
+    <h3>Remover cadastro?</h3>
+    <p>Esta ação não pode ser desfeita. Todos os seus dados serão apagados.</p>
+    <div class="modal-actions">
+      <button class="btn btn-2" onclick="fecharModal()">Cancelar</button>
+      <button class="btn btn-del" onclick="confirmarRemocao()">Sim, remover</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
