@@ -9,16 +9,30 @@
 </head>
 <body>
 
+<!-- ===== NAVEGAÇÃO: menu lateral (mesma das demais páginas) ===== -->
 <nav>
-  <a href="index.html" class="logo">ÂNCO<span>R</span>A</a>
-  <ul>
-    <li><a href="index.html">Início</a></li>
-    <li><a href="profissionais.html" class="nav-prot">Profissionais</a></li>
-    <li><a href="cadastro.html" id="nav-cadastro">Cadastro</a></li>
-    <li><a href="agendar.html" class="nav-prot nav-cta">Agendar</a></li>
-    <li><a href="login.html" id="nav-login">Login</a></li>
-  </ul>
+  <div class="nav-left">
+    <button class="menu-btn" aria-label="Abrir menu" onclick="abrirMenu()">☰</button>
+  </div>
+
+  <a href="index.html" class="logo nav-logo-center">ÂNCO<span>R</span>A</a>
+
+  <div class="nav-right">
+    <a href="cadastro.html" id="nav-cadastro" class="nav-btn nav-btn-primary">Criar cadastro</a>
+    <a href="login.html" id="nav-login" class="nav-btn nav-btn-ghost">Login</a>
+  </div>
 </nav>
+
+<div class="overlay" id="overlay" onclick="fecharMenu()"></div>
+
+<aside class="drawer" id="drawer">
+  <button class="drawer-close" aria-label="Fechar menu" onclick="fecharMenu()">✕</button>
+  <a href="index.html" class="d-item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7"/><path d="M6 9.5V20h4v-6h4v6h4V9.5"/></svg> Início</a>
+  <a href="profissionais.html" class="d-item nav-prot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c0-3.2 2.5-5.5 5.5-5.5s5.5 2.3 5.5 5.5"/><path d="M16 6a3 3 0 0 1 0 6"/><path d="M17.5 13.6c2.3.5 3.9 2.5 3.9 5.4"/></svg> Profissionais</a>
+  <a href="cadastro.html" class="d-item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="8" r="3.5"/><path d="M3.5 20c0-3.4 2.9-6 6.5-6 .8 0 1.6.1 2.3.4"/><path d="M18 14.5v5M15.5 17h5"/></svg> Cadastro</a>
+  <a href="agendar.html" class="d-item nav-prot"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 9.5h17"/><path d="M8 3v4M16 3v4"/></svg> Agendar</a>
+  <a href="login.html" class="d-item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/><path d="M3 12h11"/><path d="M10.5 8l4 4-4 4"/></svg> Login</a>
+</aside>
 
 <!-- ============================================================
      CONTAINER PRINCIPAL
@@ -189,6 +203,18 @@
   <div class="flogo">ÂNCO<span>R</span>A</div>
   <p>Plataforma de Saúde Mental Masculina · Acesso gratuito e sigiloso</p>
 </footer>
+
+<!-- Abre/fecha o menu lateral (mesma função em todas as páginas) -->
+<script>
+  function abrirMenu() {
+    document.getElementById('drawer').classList.add('aberto');
+    document.getElementById('overlay').classList.add('aberto');
+  }
+  function fecharMenu() {
+    document.getElementById('drawer').classList.remove('aberto');
+    document.getElementById('overlay').classList.remove('aberto');
+  }
+</script>
 
 <!-- Ordem de carregamento obrigatória:
      1. nav.js    — ajusta a navegação
