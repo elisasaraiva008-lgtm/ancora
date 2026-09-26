@@ -91,4 +91,25 @@
     });
   }
 
+  // ------------------------------------------------------------
+  // FAIXA DE APOIO (CVV) — rodapé fixo em todas as páginas.
+  //
+  // Criada aqui (e não escrita em cada HTML) para NÃO repetir o
+  // mesmo trecho em 6 arquivos: como o nav.js roda em toda página,
+  // basta gerar a faixa uma vez aqui e ela aparece em todas.
+  //
+  // O número é um link tel:188 — no celular, abre o discador
+  // já com o 188. Tom acolhedor, não alarmante.
+  // ------------------------------------------------------------
+  const cvv = document.createElement('div');
+  cvv.className = 'cvv-bar';
+  cvv.innerHTML =
+    '<svg class="cvv-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+    'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="M20 4H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3v4l5-4h8a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>' +
+    '<path d="M12 13.4 9.6 11c-.8-.8-.5-2.1.6-2.4.6-.1 1.3.1 1.8.7.5-.6 1.2-.8 1.8-.7 1.1.3 1.4 1.6.6 2.4L12 13.4z"/>' +
+    '</svg>' +
+    '<span>Precisa conversar agora? Ligue <a href="tel:188">188</a> — CVV, 24h, gratuito e sigiloso.</span>';
+  document.body.appendChild(cvv);
+
 })();
