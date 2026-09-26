@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ÂNCORA — Área do Colaborador</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+<!-- ===== A GUARDA =====
+     Roda ANTES da página aparecer. Se quem abriu não estiver
+     logado OU não for do tipo 'colaborador', é mandado pro login.
+     É a autorização em ação: uma pergunta (if) que protege a tela. -->
+<script>
+  (function () {
+    const logado = localStorage.getItem('logado') === 'true';
+    const tipo   = localStorage.getItem('tipo');
+    if (!logado || tipo !== 'colaborador') {
+      window.location.href = 'login.html';
+    }
+  })();
+</script>
+
+<div class="colab">
+
+  <!-- ===== BARRA LATERAL ===== -->
+  <aside class="colab-side">
+    <a href="index.html" class="logo">ÂNCO<span>R</span>A</a>
+
+    <p class="grupo">Atendimentos</p>
+    <a href="#" class="item ativo" onclick="mostrar('dashboard', this); return false;"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg> Dashboard</a>
+    <a href="#" class="item" onclick="mostrar('solicitacoes', this); return false;"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5h8l4 4V20a.5.5 0 0 1-.5.5H6a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5z"/><path d="M14 3.5V8h4"/><path d="M8.5 13h7M8.5 16.5h5"/></svg> Solicitações</a>
+    <a href="#" class="item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 9.5h17"/><path d="M8 3v4M16 3v4"/></svg> Agenda</a>
+    <a href="#" class="item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 4H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3v4l5-4h8a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/></svg> Conversas</a>
+    <a href="#" class="item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4.5" width="14" height="16" rx="2"/><path d="M9 4.5V3.5h6v1"/><path d="M8.8 12.5l2 2 4-4"/></svg> Meus atendimentos</a>
+
+    <p class="grupo">Ferramentas</p>
+    <a href="#" class="item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.7 5.1L19 10l-5.3 1.9L12 17l-1.7-5.1L5 10l5.3-1.9L12 3z"/></svg> Âncora Assistente</a>
+    <a href="#" class="item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16"/><rect x="6" y="11" width="3" height="6.5"/><rect x="11" y="6.5" width="3" height="11"/><rect x="16" y="13.5" width="3" height="4"/></svg> Relatórios</a>
+    <a href="#" class="item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 5-2 6-2 6h16s-2-1-2-6z"/><path d="M10.2 20a2 2 0 0 0 3.6 0"/></svg> Notificações</a>
+
+    <p class="grupo">Conta</p>
+    <a href="#" class="item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"/></svg> Meu perfil</a>
+    <a href="#" class="item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h9M17 8h3"/><circle cx="15" cy="8" r="2"/><path d="M4 16h3M11 16h9"/><circle cx="9" cy="16" r="2"/></svg> Configurações</a>
+    <a href="login.html" class="item"
+       onclick="localStorage.removeItem('logado'); localStorage.removeItem('tipo')"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4.5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h4"/><path d="M20 12H9"/><path d="M16 8l4 4-4 4"/></svg> Sair</a>
+  </aside>
+
+  <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+  <main class="colab-main">
+
+    <!-- ===== VIEW: DASHBOARD ===== -->
+    <section class="view" id="view-dashboard">
+      <div class="colab-head">
+        <h1>Olá, colaborador</h1>
+        <p>Aqui está o resumo dos seus atendimentos hoje.</p>
+      </div>
+
+      <!-- Container VAZIO: o JavaScript gera um cartão para cada
+           item do array 'resumo' (mesma ideia da tela de Solicitações). -->
+      <div class="stat-row" id="stat-row"></div>
+    </section>
+
+    <!-- ===== VIEW: SOLICITAÇÕES (escondida até clicar no menu) ===== -->
+    <section class="view" id="view-solicitacoes" hidden>
+      <div class="colab-head">
+        <h1>Solicitações</h1>
+        <p>Pedidos de atendimento recebidos. Analise e organize.</p>
+      </div>
+
+      <!-- Este container começa VAZIO. O JavaScript preenche com um
+           cartão para cada item do array 'solicitacoes'. -->
+      <div class="sol-lista" id="lista-solicitacoes"></div>
+    </section>
+
+  </main>
+
+</div>
+
+<!-- ============================================================
+     LÓGICA DA ÁREA DO COLABORADOR
+     Mantida inline aqui para usar POUCOS ARQUIVOS. Num projeto
+     maior, isto ficaria num colaborador.js separado (mais limpo).
+     ============================================================ -->
+<script>
+  // ===== DADOS DO DASHBOARD (cartões de resumo) =====
+  // Cada objeto é um cartão: um número e um rótulo. Números fixos
+  // de exemplo — no back-end viriam do banco (contagens reais).
+  const resumo = [
+    { num: '5',   lbl: 'Solicitações novas' },
+    { num: '3',   lbl: 'Em análise' },
+    { num: '2',   lbl: 'Atendimentos hoje' },
+    { num: '8',   lbl: 'Mensagens não lidas' },
+    { num: '98%', lbl: 'Taxa de resposta' }
+  ];
+
+  // Gera um cartão para cada item do array 'resumo'.
+  // Escrevemos o molde do cartão UMA vez; o forEach repete para todos.
+  function renderResumo() {
+    let html = '';
+    resumo.forEach(c => {
+      html += `<div class="stat"><div class="num">${c.num}</div><div class="lbl">${c.lbl}</div></div>`;
+    });
+    document.getElementById('stat-row').innerHTML = html;
+  }
+
+  // ===== DADOS =====
+  // Array de solicitações. Cada objeto é uma "linha"; cada
+  // propriedade (usuario, tipo, prioridade...) é uma "coluna".
+  // Este array é o embrião da tabela 'solicitacoes' do banco.
+  // No back-end, estes dados viriam do banco, não escritos aqui.
+  const solicitacoes = [
+    { usuario: 'João Silva',            tipo: 'Psicologia',         motivo: 'Ansiedade e estresse no trabalho', prioridade: 'alta',   status: 'nova' },
+    { usuario: 'Usuário Anônimo #1842', tipo: 'Assistência Social', motivo: 'Dificuldades financeiras e apoio', prioridade: 'media',  status: 'nova' },
+    { usuario: 'Carlos M.',             tipo: 'Enfermagem',         motivo: 'Orientação sobre saúde física',    prioridade: 'normal', status: 'em análise' },
+    { usuario: 'Usuário Anônimo #1831', tipo: 'Psicologia',         motivo: 'Crise de ansiedade',               prioridade: 'alta',   status: 'em análise' },
+    { usuario: 'Marcos Vinícius',       tipo: 'Psicologia',         motivo: 'Autoconhecimento e autoestima',    prioridade: 'normal', status: 'agendada' }
+  ];
+
+  // ===== MOLDE + REPETIÇÃO =====
+  // Percorre o array e monta um cartão de HTML para CADA solicitação.
+  // Escrevemos o molde UMA vez; o forEach repete para todos os itens.
+  function renderSolicitacoes() {
+    let html = '';
+    solicitacoes.forEach(s => {
+      // Template literal (crase): permite injetar ${...} no meio do texto.
+      html += `
+        <div class="sol-card">
+          <div class="sol-top">
+            <span class="sol-user">${s.usuario}</span>
+            <span class="tag-prio ${s.prioridade}">${s.prioridade}</span>
+          </div>
+          <span class="sol-tipo">${s.tipo}</span>
+          <p class="sol-motivo">${s.motivo}</p>
+          <span class="sol-status">Status: ${s.status}</span>
+        </div>`;
+    });
+    // Coloca todo o HTML montado dentro do container de uma vez só.
+    document.getElementById('lista-solicitacoes').innerHTML = html;
+  }
+
+  // ===== NAVEGAÇÃO ENTRE TELAS =====
+  // Esconde todas as views, mostra a escolhida e destaca o item do menu.
+  function mostrar(view, link) {
+    // 1. esconde todas as telas
+    document.querySelectorAll('.view').forEach(v => v.hidden = true);
+    // 2. mostra a tela pedida (ex.: 'view-solicitacoes')
+    document.getElementById('view-' + view).hidden = false;
+    // 3. tira o destaque de todos os itens e destaca o clicado
+    document.querySelectorAll('.colab-side a.item').forEach(a => a.classList.remove('ativo'));
+    if (link) link.classList.add('ativo');
+  }
+
+  // Ao abrir a página, já monta os cartões do dashboard e as
+  // solicitações (ambos ficam prontos ao trocar de tela no menu).
+  renderResumo();
+  renderSolicitacoes();
+</script>
+
+</body>
+</html>
