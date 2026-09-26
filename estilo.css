@@ -987,3 +987,45 @@ footer p { color: var(--muted); font-size: .8rem; }
 
 /* Ícone do card flutuante do hero. */
 .card-float .icon .ic { width: 26px; height: 26px; color: var(--teal-l); }
+
+
+/* ============================================================
+   23. FAIXA DE APOIO (CVV) — rodapé fixo
+   ============================================================ */
+
+/* Barra fixa no rodapé, sempre visível enquanto a pessoa navega.
+   Tom acolhedor (teal calmo), NÃO um alarme vermelho. */
+.cvv-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 150;                 /* acima do conteúdo; abaixo do menu lateral (250/300) */
+  background: rgba(22, 32, 50, .96);   /* --deep translúcido */
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(26, 181, 162, .25);
+  padding: .7rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+  font-size: .88rem;
+  color: var(--sand);
+  text-align: center;
+}
+
+/* Ícone de coração/conversa à esquerda do texto. */
+.cvv-bar .cvv-ic { width: 18px; height: 18px; color: var(--teal-l); flex-shrink: 0; }
+
+/* O número é um link clicável (tel:188) — no celular abre o discador. */
+.cvv-bar a {
+  color: var(--teal-l);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color .2s;
+}
+.cvv-bar a:hover { border-color: var(--teal-l); }
+
+/* No celular, texto menor e quebra natural para caber. */
+@media (max-width: 600px) {
+  .cvv-bar { font-size: .8rem; padding: .6rem .8rem; gap: .4rem; }
+}
